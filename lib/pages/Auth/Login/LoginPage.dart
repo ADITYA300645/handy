@@ -1,10 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:handy/pages/Auth/Login/googleauth.dart';
 import 'package:handy/pages/Auth/SignUp/SignUpPage.dart';
-import 'package:handy/pages/Auth/SignUp/SignUpPage1.dart';
 import 'package:handy/pages/home/HomePage.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 class LoginPage extends StatefulWidget {
@@ -18,53 +20,40 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   bool isVisible = false;
-
-  void _login() {
-    String email = _emailController.text.trim();
-    String password = _passwordController.text.trim();
-
-    if (email.isNotEmpty && password.isNotEmpty) {
-      // Successful login, navigate to the home page
-      Get.to(() => HomePage());
-    } else {
-      // Show an alert for invalid credentials
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Invalid Credentials'),
-            content: const Text('Please enter valid email and password.'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(); // Close the dialog
-                },
-                child: const Text('OK'),
-              ),
-            ],
-          );
-        },
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  Future<void> _signInWithEmailAndPassword() async {
+    try {
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+      print('Sign-in successful! User UID: ${userCredential.user!.uid}');
+      // Retrieve user data from Firestore
+      // Note: Replace 'users' with your Firestore collection name
+      var userDocument = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userCredential.user!.uid)
+          .get();
+      // You can access user data like this
+      String username = userDocument['username'];
+      print(username);
+      String email = userDocument['email'];
+      String password = userDocument['password'];
+      String phone = userDocument['phone'];
+      // Navigate to the home page
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
+    }
+    on FirebaseAuthException catch (e) {
+      print('Failed to sign in: $e');
+      Fluttertoast.showToast(
+        msg: 'Failed: inputs not match',
+        backgroundColor: Colors.red,
       );
     }
   }
-
-  void _handleGoogleSignIn() async {
-    try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
-      if (googleUser == null) {
-        // User canceled the Google Sign In process
-        return;
-      }
-
-      // Successful Google Sign In, navigate to the home page
-      Get.to(() => HomePage());
-    } catch (error) {
-      print(error);
-    }
-  }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -127,7 +116,7 @@ class _LoginPageState extends State<LoginPage> {
                       child: TextField(
                         controller: _emailController,
                         decoration: const InputDecoration(
-                            hintText: "Email",
+                            hintText: "email/username",
                             suffixIcon: Icon(Icons.account_circle)),
                       ),
                     ),
@@ -138,7 +127,7 @@ class _LoginPageState extends State<LoginPage> {
                         controller: _passwordController,
                         obscureText: isVisible,
                         decoration: InputDecoration(
-                            hintText: "Password",
+                            hintText: "password",
                             suffix: IconButton(
                               icon: isVisible
                                   ? const Icon(Icons.visibility)
@@ -151,12 +140,23 @@ class _LoginPageState extends State<LoginPage> {
                             )),
                       ),
                     ),
+
+
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: TextButton(
+                          onPressed: (){},
+                          child: Text('forgot password'),
+                          ),
+                        ),
+
+
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 20),
+                          horizontal: 20.0, vertical: 1),
                       child: Center(
                         child: InkWell(
-                          onTap: _login,
+                          onTap: _signInWithEmailAndPassword,
                           child: Card(
                             color: Colors.blue,
                             child: Container(
@@ -172,29 +172,39 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
 
-                    Row(
-                      children: const [
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 16.0),
-                            child: Divider(),
+                  /* Column(
+                     crossAxisAlignment: CrossAxisAlignment.center,
+                     children: [
+                       const Text('or'),
+                       SizedBox(
+                         width: double.infinity,
+                         child: OutlinedButton.icon(
+                             onPressed:(){},
+                             icon: Image(image: AssetImage('assets/photos/googleLogo.png'),
+                             fit: BoxFit.cover,
+                             ),
+                             label: Text('google with login'),
+                         ),
+                       )
+                     ],
+                   ),*/
+
+
+                   Center(
+                      child: TextButton(
+                        onPressed: () async {
+                              await AuthService().signInWithGoogle();
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (context) => HomePage()),
+                              );
+                            },
+                          child: Text('login with google'),
+
                           ),
                         ),
-                        Text("OR"),
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 16.0),
-                            child: Divider(),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const Center(
-                      child: Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text("Login Options Icons "),
-                      ),
-                    )
+
+
                   ],
                 ),
               ),
@@ -209,7 +219,7 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => SignUpPage1()),
+                      MaterialPageRoute(builder: (context) => SignUpPage()),
                     );
                   },
                   child: const Text("Sign Up"),

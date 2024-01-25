@@ -1,5 +1,6 @@
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
+import 'package:handy/pages/widgets/bottombar/CustomBottomBar.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -34,7 +35,7 @@ class _ProfileState extends State<Profile> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        toolbarHeight: 180,
+        toolbarHeight: 140,
         title: Container(
           height: MediaQuery.of(context).size.width * 0.2,
           width: MediaQuery.of(context).size.width * 0.2,
@@ -89,10 +90,15 @@ class _ProfileState extends State<Profile> {
           ),
         ),
       ),
+      
       body: Column(
+
+
         children: [
+          SizedBox(height:MediaQuery.of(context).size.height*0.04),
+
           Padding(
-            padding: EdgeInsets.only(top: 30.0),
+            padding: EdgeInsets.only(top: 5),
             child: Card(
               child: ListTile(
                 subtitle: Text('username'),
@@ -136,113 +142,116 @@ class _ProfileState extends State<Profile> {
               leading: Icon(Icons.flag_circle),
             ),
           ),
-          SizedBox(height: 20.0),
-          ElevatedButton(
-            onPressed: () {
-              // Reset the TextEditingController values
-              usernameController.clear();
-              mailController.clear();
-              passwordController.clear();
-              contactNoController.clear();
-              classController.clear();
-              citizenController.clear();
 
-              // Show a custom-sized AlertDialog
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return Dialog(
-                    // Set the desired width and height
-                    child: Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.all(16.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          TextField(
-                            controller: usernameController,
-                            decoration: InputDecoration(
-                              labelText: 'Username',
-                            ),
-                          ),
-                          TextField(
-                            controller: mailController,
-                            decoration: InputDecoration(
-                              labelText: 'Mail',
-                            ),
-                          ),
-                          TextField(
-                            controller: passwordController,
-                            decoration: InputDecoration(
-                              labelText: 'Password',
-                            ),
-                          ),
-                          TextField(
-                            controller: contactNoController,
-                            decoration: InputDecoration(
-                              labelText: 'Contact No.',
-                            ),
-                          ),
-                          TextField(
-                            controller: classController,
-                            decoration: InputDecoration(
-                              labelText: 'Class',
-                            ),
-                          ),
-                          SizedBox(height: 15),
-                          DropDownTextField(
-                            textFieldDecoration:
-                                InputDecoration(hintText: "Citizen"),
-                            initialValue: "name4",
+          Padding(
+            padding: const EdgeInsets.only(top: 40),
+            child: ElevatedButton(
+              onPressed: () {
+                // Reset the TextEditingController values
+                usernameController.clear();
+                mailController.clear();
+                passwordController.clear();
+                contactNoController.clear();
+                classController.clear();
+                citizenController.clear();
 
-                            // controller: citizenController,
-                            clearOption: true,
-                            enableSearch: true,
-                            searchDecoration:
-                                const InputDecoration(hintText: "select your nation"),
-                            validator: (value) {
-                              if (value == null) {
-                                return "Required field";
-                              } else {
-                                return null;
-                              }
-                            },
-                            dropDownItemCount: 6,
+                // Show a custom-sized AlertDialog
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Dialog(
+                      // Set the desired width and height
+                      child: Container(
+                        width: MediaQuery.of(context).size.width*0.8,
+                        height: 650,
 
-                            dropDownList: const [
-                              DropDownValueModel(name: 'Indian', value: ""),
-                              DropDownValueModel(name: 'American', value: ""),
-                              DropDownValueModel(name: 'Canadian', value: ""),
-                              DropDownValueModel(name: 'Chinese', value: ""),
-                              DropDownValueModel(name: 'Australian', value: ""),
-                              DropDownValueModel(name: 'African', value: ""),
-                              DropDownValueModel(name: 'Japanese', value: ""),
-                              DropDownValueModel(name: 'Russian', value: ""),
-                            ],
-                            onChanged: (val) {},
-                          ),
-                          Center(
-                            child: TextButton(
-                              onPressed: () {
-                                setState(() {
-                                  // Update the card details with new values
-                                  // You can add more logic or validations here if needed
-                                });
-                                Navigator.pop(context); // Close the dialog
-                              },
-                              child: Text('Save'),
+                        padding: EdgeInsets.all(10.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TextField(
+                              controller: usernameController,
+                              decoration: InputDecoration(
+                                labelText: 'Username',
+                              ),
                             ),
-                          ),
-                        ],
+                            TextField(
+                              controller: mailController,
+                              decoration: InputDecoration(
+                                labelText: 'Mail',
+                              ),
+                            ),
+                            TextField(
+                              controller: passwordController,
+                              decoration: InputDecoration(
+                                labelText: 'Password',
+                              ),
+                            ),
+                            TextField(
+                              controller: contactNoController,
+                              decoration: InputDecoration(
+                                labelText: 'Contact No.',
+                              ),
+                            ),
+
+                           SizedBox(height: 15),
+
+                           DropDownTextField(
+                             textFieldDecoration:
+                             InputDecoration(hintText: 'Category',),
+                               clearOption: true,
+                               enableSearch: true,
+                               dropDownItemCount: 6,
+                               dropDownList: const[
+                                 DropDownValueModel(name: 'user', value: 'value'),
+                                 DropDownValueModel(name: 'service provider', value: 'value'),
+                                 ],
+                           ),
+
+                            SizedBox(height: 15),
+                            DropDownTextField(
+                              textFieldDecoration:
+                                  InputDecoration(hintText: "Citizen"),
+                              dropDownList: const [
+                                DropDownValueModel(name: 'Indian', value: ""),
+                                DropDownValueModel(name: 'American', value: ""),
+                                DropDownValueModel(name: 'Canadian', value: ""),
+                                DropDownValueModel(name: 'Chinese', value: ""),
+                                DropDownValueModel(name: 'Australian', value: ""),
+                                DropDownValueModel(name: 'African', value: ""),
+                                DropDownValueModel(name: 'Japanese', value: ""),
+                                DropDownValueModel(name: 'Russian', value: ""),
+                              ],
+                            ),
+                            SizedBox(height:MediaQuery.of(context).size.height*0.04),
+
+                            Center(
+                              child: TextButton(
+                                onPressed: () {
+                                  setState(() {
+                                    // Update the card details with new values
+                                    // You can add more logic or validations here if needed
+                                  });
+                                  Navigator.pop(context); // Close the dialog
+                                },
+                                child: Text('Save'),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  );
-                },
-              );
-            },
-            child: Text('edit profile'),
+                    );
+                  },
+                );
+              },
+              child: Text('edit profile'),
+            ),
           ),
+        SizedBox(height:MediaQuery.of(context).size.height*0.05),
+
+          Flexible(child: CustomBottomBar()),
+
         ],
       ),
     );

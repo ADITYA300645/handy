@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:handy/ServiceProfile/ServiceProfile.dart';
-import 'package:handy/widgets/appbar/CustomAppBar.dart';
-import 'package:handy/widgets/bottombar/CustomBottomBar.dart';
-import 'package:handy/widgets/drawer/customDrawer.dart';
+import 'package:handy/pages/ServiceProfile/ServiceProfile.dart';
+import 'package:handy/pages/widgets/appbar/CustomAppBar.dart';
+import 'package:handy/pages/widgets/bottombar/CustomBottomBar.dart';
+import 'package:handy/pages/widgets/drawer/customDrawer.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:hive/hive.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -25,7 +26,7 @@ class _HomePageState extends State<HomePage> {
         children: [
           NestedScrollView(
             headerSliverBuilder: (context, innerBoxIsScrolled) =>
-                const [CustomAppbar()],
+                const [CustomAppbar(pageTitle: 'Home')],
 
             body: SingleChildScrollView(
               physics: ScrollPhysics(),
@@ -49,26 +50,39 @@ class _HomePageState extends State<HomePage> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 color: Colors.grey,
+                                image: DecorationImage(
+                                  image: AssetImage('assets/photos/carpenter.jpg'),
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
                             SizedBox(width: 15),
                             Column(
                               children: [
                                 Container(
-                                  height: 130,
-                                  width: 120,
+                                  height: MediaQuery.of(context).size.height * 0.15,
+                                  width:  MediaQuery.of(context).size.width * 0.3,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
                                     color: Colors.grey,
-                                  ),                                ),
+                                    image: DecorationImage(
+                                      image: AssetImage('assets/photos/labour.jpg'),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
                                 SizedBox(height: 16),
 
                                 Container(
-                                  height: 130,
-                                  width: 120,
+                                  height: MediaQuery.of(context).size.height * 0.13,
+                                  width:  MediaQuery.of(context).size.width * 0.3,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
                                     color: Colors.grey,
+                                    image: DecorationImage(
+                                      image: AssetImage('assets/photos/cook.jpg'),
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),                                ),
                               ],
                             ),
@@ -118,7 +132,14 @@ class _HomePageState extends State<HomePage> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               color: Colors.grey,
-                            ),                          ),
+                            ),
+                            child: Text('carpenter',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                              fontSize: 13,
+                            ),
+                            ),
+                          ),
 
                           Container(
                             height: MediaQuery.of(context).size.width * 0.08,
@@ -126,7 +147,14 @@ class _HomePageState extends State<HomePage> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               color: Colors.grey,
-                            ),                          ),
+                            ),
+                            child: Text('labour',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 13,
+                              ),
+                            ),
+                          ),
 
                           Container(
                             height: MediaQuery.of(context).size.width * 0.08,
@@ -134,7 +162,13 @@ class _HomePageState extends State<HomePage> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               color: Colors.grey,
-                            ),                          ),
+                            ),
+                            child: Text('cook',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 13,
+                              ),
+                            ),),
 
 
                           Container(
@@ -143,7 +177,14 @@ class _HomePageState extends State<HomePage> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               color: Colors.grey,
-                            ),                          ),
+                            ),
+                            child: Text('plumber',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 13,
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -153,17 +194,51 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(
                       child: CarouselSlider(
                         items: [
-                          Container(color: Colors.grey),
-                          Container(color: Colors.grey),
-                          Container(color: Colors.grey),
-                          Container(color: Colors.grey),
+                          Container(decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage('assets/photos/construction.jpg'),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          ),
+
+                          Container(decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage('assets/photos/labour2.jpg'),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          ),
+
+                          Container(decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage('assets/photos/labour.jpg'),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          ),
+
+                          Container(decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage('assets/photos/electrician.jpg'),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          ),
+                         Container(decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage('assets/photos/cook2.jpg'),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          ),
+
                         ],
                         options: CarouselOptions(
                           height: 200,
                           aspectRatio: 16/9,
                           viewportFraction: 0.8,
-                          initialPage: 4,
-                          enableInfiniteScroll: true,
+                          initialPage: 0,
                           reverse: true,
                           autoPlay: true,
                           autoPlayInterval: Duration(seconds: 3),
@@ -183,6 +258,10 @@ class _HomePageState extends State<HomePage> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         color: Colors.grey,
+                        image: DecorationImage(
+                          image: AssetImage('assets/photos/carpenter3.jpg'),
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
 
@@ -197,20 +276,26 @@ class _HomePageState extends State<HomePage> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(30),
                             color: Colors.blueGrey,
+                            image: DecorationImage(
+                              image: AssetImage('assets/photos/user.jpg'),
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
 
                         SizedBox(width: 5),
 
-                        SizedBox(
-                          child: Text('carpentry',style: TextStyle(
-                            fontSize: 10,
-                            fontWeight:FontWeight.bold,
-                          ),
+                        Expanded(
+                          child: SizedBox(
+                            child: Text('carpentry',style: TextStyle(
+                              fontSize: 10,
+                              fontWeight:FontWeight.bold,
+                            ),
+                            ),
                           ),
                         ),
 
-                        SizedBox(width: 150),
+                        SizedBox(width:5),
 
                         SizedBox(
                           child: Icon(
@@ -225,8 +310,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
 
-
-                        SizedBox(width: 30),
+                        SizedBox(width:  MediaQuery.of(context).size.width*0.1),
 
                         SizedBox(
                           child: Icon(
@@ -260,6 +344,10 @@ class _HomePageState extends State<HomePage> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 color: Colors.grey,
+                                image: DecorationImage(
+                                  image: AssetImage('assets/photos/cook2.jpg'),
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
                             SizedBox(width: 20),
@@ -270,17 +358,10 @@ class _HomePageState extends State<HomePage> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 color: Colors.grey,
-                              ),
-                            ),
-
-                            SizedBox(width: 20),
-
-                            Container(
-                              height: 300,
-                              width: 170,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.grey,
+                                image: DecorationImage(
+                                  image: AssetImage('assets/photos/construction3.jpg'),
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
 
@@ -292,6 +373,10 @@ class _HomePageState extends State<HomePage> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 color: Colors.grey,
+                                image: DecorationImage(
+                                  image: AssetImage('assets/photos/carpenter.jpg'),
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
 
@@ -303,6 +388,25 @@ class _HomePageState extends State<HomePage> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 color: Colors.grey,
+                                image: DecorationImage(
+                                  image: AssetImage('assets/photos/electrician2.jpg'),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+
+                            SizedBox(width: 20),
+
+                            Container(
+                              height: 300,
+                              width: 170,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.grey,
+                                image: DecorationImage(
+                                  image: AssetImage('assets/photos/labour4.jpg'),
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
                           ],
@@ -350,6 +454,10 @@ class _HomePageState extends State<HomePage> {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
                                   color: Colors.grey,
+                                  image: DecorationImage(
+                                    image: AssetImage('assets/photos/cook2.jpg'),
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
                               SizedBox(height: 5),
@@ -361,19 +469,25 @@ class _HomePageState extends State<HomePage> {
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(30),
                                       color: Colors.blueGrey,
-                                    ),
-                                  ),
-                                  SizedBox(width: 5),
-                                  SizedBox(
-                                    child: Text(
-                                      'carpentry',
-                                      style: TextStyle(
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.bold,
+                                      image: DecorationImage(
+                                        image: AssetImage('assets/photos/user2.jpg'),
+                                        fit: BoxFit.cover,
                                       ),
                                     ),
                                   ),
-                                  SizedBox(width: 150),
+                                  SizedBox(width: 5),
+                                  Expanded(
+                                    child: SizedBox(
+                                      child: Text(
+                                        'carpentry',
+                                        style: TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(width:5),
                                   SizedBox(
                                     child: Icon(
                                       Icons.shopping_bag_outlined,
@@ -388,7 +502,7 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                     ),
                                   ),
-                                  SizedBox(width: 30),
+                                  SizedBox(width: 5),
                                   SizedBox(
                                     child: Icon(
                                       Icons.remove_red_eye_outlined,

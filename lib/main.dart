@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:handy/UserProvider/UserProvider.dart';
-import 'package:handy/controllers/JWTController/JWTController.dart';
+import 'package:handy/pages/controllers/JWTController/JWTController.dart';
 import 'package:handy/pages/Auth/Login/LoginPage.dart';
 import 'package:handy/pages/home/HomePage.dart';
-import 'package:handy/utils/Theme/theme.dart';
+import 'package:handy/Theme/theme.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
-//import 'package:handy/UserProvider/';
+
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
