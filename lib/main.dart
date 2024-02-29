@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:handy/src/pages/Auth/SignUp/SignUpPage.dart';
+import 'package:handy/src/Splash/Splash.dart';
 import 'package:handy/src/pages/controllers/JWTController/JWTController.dart';
-import 'package:handy/src/pages/Auth/Login/LoginPage.dart';
 import 'package:handy/Theme/theme.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,8 +37,7 @@ class _MyAppState extends State<MyApp> {
       //  create: (context) => UserProvider(),
       title: 'Handy',
       theme: lightTheme,
-      home: Obx(() =>
-          jwtController.isAuth.value ? const SignUpPage() : const LoginPage()  ),
+      home: SplashScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
