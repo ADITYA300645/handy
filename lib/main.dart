@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:handy/pages/controllers/JWTController/JWTController.dart';
-import 'package:handy/pages/Auth/Login/LoginPage.dart';
-import 'package:handy/pages/home/HomePage.dart';
+import 'package:handy/src/Splash/Splash.dart';
+import 'package:handy/src/pages/controllers/JWTController/JWTController.dart';
 import 'package:handy/Theme/theme.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 
-void main() async{
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(); //Initilize Firebase
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  ); //Initilize Firebase
   final appDoc = await getApplicationDocumentsDirectory();
   Hive.init(appDoc.path);
   await Hive.openBox("secrets");
@@ -29,12 +32,12 @@ class _MyAppState extends State<MyApp> {
   var jwtController = Get.put(JWTController());
 
   @override
-  Widget build(BuildContext context)  {
+  Widget build(BuildContext context) {
     return GetMaterialApp(
-    //  create: (context) => UserProvider(),
+      //  create: (context) => UserProvider(),
       title: 'Handy',
       theme: lightTheme,
-      home:  Obx(() => jwtController.isAuth.value ? const HomePage() : const LoginPage()),
+      home: SplashScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
