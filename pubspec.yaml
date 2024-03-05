@@ -66,6 +66,9 @@ dependencies:
 
   localstorage: ^4.0.0+1
   flutter_native_splash: ^2.3.10
+  image_picker: ^1.0.7
+  url_launcher: ^6.0.10
+
 
 
 

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:handy/src/pages/Auth/Login/googleauth.dart';
 import 'package:handy/src/pages/Auth/SignUp/SignUpPage.dart';
 import 'package:handy/src/pages/home/HomePage.dart';
+import 'package:handy/src/pages/profile/EditImage.dart';
 
 
 class LoginPage extends StatefulWidget {
@@ -226,21 +227,10 @@ class _LoginPageState extends State<LoginPage> {
 
                             if(_validateInput()){
 
-                            /*  UserCredential userCred = FirebaseAuth.instance.currentUser('clinet');
-                              userCred.user({
-                                'email':_emailController.text,
-                                'password':_passwordController.text,
 
-                              });*/
                               SignInWithEmailAndPassword();
 
-
-
-
-
                             }
-
-
 
                           },
                           child: Card(

@@ -47,7 +47,7 @@ class CustomBottomBar extends StatelessWidget {
               ),
               IconButton(
                   onPressed: () {
-                    Get.off(Profile());
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>Profile()));
                   },
                   icon: const Icon(Icons.manage_accounts)
               ),

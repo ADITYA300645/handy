@@ -2,7 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-     <!-- Put me in the [my_project]/ios/Runner/Info.plist file -->
+         <!-- Put me in the [my_project]/ios/Runner/Info.plist file -->
      <!-- Google Sign-in Section -->
      <key>CFBundleURLTypes</key>
      <array>
@@ -44,6 +44,10 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+    <string>Photo Libarary usage</string>
+    <key>NSCameraUsageDescription</key>
+    <string>Camera usage</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

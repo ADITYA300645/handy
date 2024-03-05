@@ -1,13 +1,17 @@
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:handy/src/pages/profile/EditImage.dart';
 import 'package:handy/src/pages/widgets/appbar/CustomAppBar.dart';
-import 'package:handy/src/pages/widgets/bottombar/CustomBottomBar.dart';
+import 'package:image_picker/image_picker.dart';
 
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
+
 
   @override
   _ProfileState createState() => _ProfileState();
@@ -22,6 +26,7 @@ class _ProfileState extends State<Profile> {
   TextEditingController citizenController = TextEditingController();
   final currentUser = FirebaseAuth.instance.currentUser;
 
+
   Widget buildCurvedContainer(
       double width, double height, double borderRadius, EdgeInsets margin) {
     return Container(
@@ -34,6 +39,16 @@ class _ProfileState extends State<Profile> {
       margin: margin,
     );
   }
+  Uint8List? _image;
+
+  void selectImage() async{
+    Uint8List img = await pickImage(ImageSource.gallery);
+    setState(() {
+      _image = img;
+    });
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -56,95 +71,112 @@ class _ProfileState extends State<Profile> {
                       children: [
                         Column(
                           children: [
-                            SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-                            Container(
+                            SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+                          /*  Container(
                               width: 100,
                               height: 100,
                               decoration: BoxDecoration(
-                                  color: Colors.grey,
-                                  borderRadius: BorderRadius.circular(50),
+                                  borderRadius: BorderRadius.circular(10),
                                   image:DecorationImage(
-                                    image: AssetImage('assets/photos/user.jpg'),
+                                    image: AssetImage('assets/photos/user3.jpg'),
                                     fit: BoxFit.cover,
-                                  )
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 5),
-                              child: Card(
-                                child: ListTile(
-                                  subtitle: Text(userData['username']),
-                                  title: Text(usernameController.text),
-                                  leading: Icon(Icons.account_circle),
-                                ),
-                              ),
-                            ),
-                            Card(
-                              child: ListTile(
-                                subtitle: Text(userData['email']),
-                                title: Text(mailController.text),
-                                leading: Icon(Icons.mail_outline_outlined),
-                              ),
-                            ),
-                            Card(
-                              child: ListTile(
-                                subtitle: Text(userData['phone']),
-                                title: Text(contactNoController.text),
-                                leading: Icon(Icons.phone_android_outlined),
-                              ),
-                            ),
-                            Card(
-                              child: ListTile(
-                                subtitle: Text('client'),
-                                title: Text(classController.text),
-                                leading: Icon(Icons.track_changes_rounded),
-                              ),
-                            ),
-                            Card(
-                              child: ListTile(
-                                subtitle: Text(userData['password']),
-                                title: Text(passwordController.text),
-                                leading: Icon(Icons.lock_open_rounded),
-                              ),
-                            ),
-                            Card(
-                              child: ListTile(
-                                subtitle: Text('Indian'),
-                                title: Text(citizenController.text),
-                                leading: Icon(Icons.flag_circle),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 20),
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  primary: Colors.transparent,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius:BorderRadius.circular(15),
                                   ),
-                                ),
-                                onPressed: () {
-                                  // Reset the TextEditingController values
-                                  usernameController.clear();
-                                  mailController.clear();
-                                  passwordController.clear();
-                                  contactNoController.clear();
-                                  classController.clear();
-                                  citizenController.clear();
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.shade100,
+                                    spreadRadius: 2,
+                                    blurRadius: 5,
+                                  )
+                                ]
+                              ),
 
-                                  // Show a custom-sized AlertDialog
-                                  showDialog(
+                              child: Padding(
+                                padding: const EdgeInsets.only(top:75,left: 80),
+                                    child:IconButton(
+                                      onPressed: (){
+
+                                      },
+                                      icon: const Icon(Icons.add_a_photo,color: Colors.indigo),
+                                    ),
+                              ),
+                            ),*/
+                            Stack(
+                              children: [
+                                _image != null?
+                                    CircleAvatar(
+                                      radius: 64,
+                                      backgroundImage: MemoryImage(_image!),
+                                    ):
+
+                                const CircleAvatar(
+                                  radius: 64,
+                                  backgroundImage: AssetImage('assets/photos/user3.jpg'),
+                                ),
+
+                                Positioned(child: IconButton(
+                                  onPressed: (){},
+                                  icon: Icon(Icons.add_a_photo),
+                                ),
+                                  bottom: -10,
+                                  left: 80,
+                                )
+                              ],
+                            ),
+
+                            ListTile(
+                              title: Text('Username'),
+                              subtitle: Text(userData['username']),
+                              leading: Icon(Icons.account_circle),
+                            ),
+                            Divider(),
+                            ListTile(
+                              title: Text('email'),
+                              subtitle: Text(userData['email']),
+                              leading: Icon(Icons.email),
+                            ),
+                            Divider(),
+                            ListTile(
+                              title: Text('Location'),
+                              subtitle: Text('Delhi Lajpat Nagar'),
+                              leading: Icon(Icons.location_on_sharp),
+                            ),
+                            Divider(),
+                            ListTile(
+                              title: Text('phone'),
+                              subtitle: Text(userData['phone']),
+                              leading: Icon(Icons.phone),
+                            ),
+                            Divider(),
+                            ListTile(
+                              title: Text('password'),
+                              subtitle: Text(userData['password']),
+                              leading: Icon(Icons.lock),
+                            ),
+                            Divider(),
+                            ListTile(
+                              title: Text('category'),
+                              subtitle: Text('user'),
+                              leading: Icon(Icons.category),
+                            ),
+
+
+                            InkWell(
+                              onTap: (){
+                                usernameController.clear();
+                                mailController.clear();
+                                passwordController.clear();
+                                contactNoController.clear();
+                                classController.clear();
+                                citizenController.clear();
+                                showDialog(
                                     context: context,
-                                    builder: (BuildContext context) {
+                                    builder: (BuildContext context){
                                       return Dialog(
-                                        // Set the desired width and height
                                         child: Container(
-                                          width: MediaQuery.of(context).size.width * 0.8,
-                                          height: 650,
+                                          width: MediaQuery.of(context).size.width * 0.6,
+                                          height:MediaQuery.of(context).size.height * 0.5,
                                           padding: EdgeInsets.all(10.0),
                                           child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               TextField(
                                                 controller: usernameController,
@@ -179,53 +211,58 @@ class _ProfileState extends State<Profile> {
                                                 dropDownItemCount: 6,
                                                 dropDownList: const [
                                                   DropDownValueModel(name: 'client', value: 'value'),
-                                                  DropDownValueModel(name: 'service provider', value: 'value'),
+                                                  DropDownValueModel(name: 'worker', value: 'value'),
                                                 ],
                                               ),
-                                              SizedBox(height: 15),
-                                              DropDownTextField(
-                                                enableSearch: true,
-                                                textFieldDecoration: InputDecoration(hintText: "Citizen"),
-                                                dropDownList: const [
-                                                  DropDownValueModel(name: 'Indian', value: ""),
-                                                  DropDownValueModel(name: 'American', value: ""),
-                                                  DropDownValueModel(name: 'Canadian', value: ""),
-                                                  DropDownValueModel(name: 'Chinese', value: ""),
-                                                  DropDownValueModel(name: 'Australian', value: ""),
-                                                  DropDownValueModel(name: 'African', value: ""),
-                                                  DropDownValueModel(name: 'Japanese', value: ""),
-                                                  DropDownValueModel(name: 'Russian', value: ""),
-                                                ],
-                                              ),
-                                              SizedBox(height: MediaQuery.of(context).size.height * 0.04),
-                                              Center(
-                                                child: TextButton(
-                                                  onPressed: () {
-                                                    setState(() {
-                                                      // Update the card details with new values
-                                                      // You can add more logic or validations here if needed
-                                                    });
-                                                    Navigator.pop(context); // Close the dialog
-                                                  },
-                                                  child: Text('Save'),
-                                                ),
-                                              ),
+                                          SizedBox(height: MediaQuery.of(context).size.height * 0.04),
+                                          Center(
+                                            child: TextButton(
+                                              onPressed: () {
+                                                setState(() {
+                                                  // Update the card details with new values
+                                                  // You can add more logic or validations here if needed
+                                                });
+                                                Navigator.pop(context); // Close the dialog
+                                              },
+                                              child: Text('Save'),
+                                            ),
+                                          ),
+
                                             ],
                                           ),
+
                                         ),
                                       );
-                                    },
-                                  );
-                                },
-                                child: Text('edit profile'),
+
+                                    }
+                                    );
+
+                              },
+                              child: Container(
+                                height: 60,
+                                width: 300,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: Colors.grey.shade300,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey,
+                                        spreadRadius: 1,
+                                        blurRadius: 1,
+                                      )
+                                    ]
+                                ),
+                                child: Center(child: Text('edit profile',style: TextStyle(
+                                  fontSize: 20,
+                                ),)),
                               ),
                             ),
+
                           ],
                         ),
                       ],
                     ),
                   ),
-                  const CustomBottomBar(),
                 ],
               );
             }else if(snapshort.hasError){
@@ -240,115 +277,60 @@ class _ProfileState extends State<Profile> {
 
     );
   }
+
 }
 
-void main() {
-  runApp(MaterialApp(
-    home: Profile(),
-  ));
-}
+/*void showImagePicker(BuildContext context) {
+  showModalBottomSheet(
+      context: context,
+      builder: (builder) {
+        return Padding(
+          padding: const EdgeInsets.all(18.0),
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height/12,
+            child: Row(
+              children: [
+                Expanded(
+                  child: InkWell(
+                    onTap: () {
+                      pickImage(ImageSource.gallery);
 
-/*/*import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-
-// This function updates the user profile data in Firestore
-Future<void> updateUserProfileData(String userId, Map<String, dynamic> userData) async {
-  try {
-    // Get a reference to the Firestore instance
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-    // Update the user profile data
-    await firestore.collection('users').doc(userId).update(userData);
-  } catch (error) {
-    print("Error updating user profile: $error");
-    // Handle error accordingly
-  }
-}
-
-// Widget where the dialog is shown
-class ProfileEditorDialog extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    TextEditingController usernameController = TextEditingController();
-    TextEditingController mailController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
-    TextEditingController contactNoController = TextEditingController();
-
-    return Dialog(
-      child: Container(
-        width: MediaQuery.of(context).size.width * 0.9,
-        height: MediaQuery.of(context).size.height * 0.7,
-        padding: EdgeInsets.all(10.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextField(
-              controller: usernameController,
-              decoration: InputDecoration(
-                labelText: 'Username',
-              ),
+                    },
+                    child: const SizedBox(
+                      child: Column(
+                        children: [
+                          Icon(
+                            Icons.image,
+                            size: 40,
+                          ),
+                          Text("Gallery")
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: InkWell(
+                    onTap: () {
+                    },
+                    child: const SizedBox(
+                      child: Column(
+                        children: [
+                          Icon(
+                            Icons.camera_alt,
+                            size: 40,
+                          ),
+                          Text("Camera")
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-            TextField(
-              controller: mailController,
-              decoration: InputDecoration(
-                labelText: 'Mail',
-              ),
-            ),
-            TextField(
-              controller: passwordController,
-              decoration: InputDecoration(
-                labelText: 'Password',
-              ),
-            ),
-            TextField(
-              controller: contactNoController,
-              decoration: InputDecoration(
-                labelText: 'Contact No.',
-              ),
-            ),
-            SizedBox(height: 15),
-            // Other form fields...
-            SizedBox(height: MediaQuery.of(context).size.height * 0.04),
-            Center(
-              child: TextButton(
-                onPressed: () {
-                  // Construct the user data to be updated
-                  Map<String, dynamic> userData = {
-                    'username': usernameController.text,
-                    'mail': mailController.text,
-                    'password': passwordController.text,
-                    'contactNo': contactNoController.text,
-                    // Add other fields as needed
-                  };
-
-                  // Assuming you have the user ID available, replace 'userId' with the actual user ID
-                  String userId = 'userId';
-
-                  // Call the function to update the user profile data
-                  updateUserProfileData(userId, userData);
-
-                  Navigator.pop(context); // Close the dialog
-                },
-                child: Text('Save'),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// Usage example:
-// Call this function where you want to show the dialog
-// For example, you can call it from a button's onPressed callback
-void showProfileEditorDialog(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return ProfileEditorDialog();
-    },
-  );
+          ),
+        );
+      });
 }
 */

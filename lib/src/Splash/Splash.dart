@@ -16,20 +16,23 @@ class _SplashScreenState extends State<SplashScreen>
     super.initState();
     _animationController = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 500),
+      duration: Duration(seconds: 3), // Set the duration of the animation
     );
-    _animation = Tween<double>(begin: 0, end: 100).animate(
-      CurvedAnimation(
-        parent: _animationController,
-        curve: Curves.bounceInOut,
-      ),
-    );
-    _animationController.repeat(reverse: true);
-    Future.delayed(Duration(seconds: 2), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (cotext) => LoginPage()),
-      );
+    _animation = Tween<double>(
+      begin: 0.0,
+      end: 100.0, // Adjust this value as per your requirement
+    ).animate(_animationController);
+
+    // Start the animation
+    _animationController.forward();
+
+    // Navigate to the login page after the animation finishes
+    _animationController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => LoginPage()),
+        );
+      }
     });
   }
 

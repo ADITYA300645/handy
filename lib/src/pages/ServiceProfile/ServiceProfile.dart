@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:handy/src/pages/widgets/bottombar/CustomBottomBar.dart';
 
 class ServiceProfile extends StatefulWidget {
   const ServiceProfile({Key? key});
