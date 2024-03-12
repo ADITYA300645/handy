@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:handy/src/pages/Auth/Login/googleauth.dart';
 import 'package:handy/src/pages/Auth/SignUp/SignUpPage.dart';
 import 'package:handy/src/pages/home/HomePage.dart';
-import 'package:handy/src/pages/profile/EditImage.dart';
+import 'package:handy/src/pages/profile/ProfileWidgets/EditImage.dart';
 
 
 class LoginPage extends StatefulWidget {
@@ -252,7 +252,7 @@ class _LoginPageState extends State<LoginPage> {
                     Center(
                       child: GestureDetector(
                         onTap: () async {
-                          await AuthService().signInWithGoogle();
+                          await signInWithGoogle();
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(builder: (context) => HomePage()),
