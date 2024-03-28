@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:handy/src/pages/Auth/Login/LoginPage.dart';
 import 'package:handy/src/pages/Credits/CreditsPage.dart';
 import 'package:handy/src/pages/About/AboutPage.dart';
 import 'package:handy/Theme/ThemePage.dart';
@@ -10,6 +11,11 @@ class CustomDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future <LoginPage> signOut()  async{
+      await FirebaseAuth.instance.signOut();
+
+      return new LoginPage();
+    }
     return SafeArea(
       child: Container(
         height: MediaQuery.of(context).size.height * 0.7,
@@ -81,9 +87,12 @@ class CustomDrawer extends StatelessWidget {
                 },
               ),
               ListTile(
-                title: Text("Signout"),
+                title: Text("Logout"),
                 leading: Icon(Icons.output),
-                onTap: () {}
+                onTap: () async {
+                  print('logout');
+            signOut();
+                }
               ),
             ],
           ),

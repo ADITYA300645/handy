@@ -20,7 +20,7 @@ class ClientPage extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ListView.builder(
-                    itemCount: 20, // Set the itemCount to the number of items you want to display
+                    itemCount: 1, // Set the itemCount to the number of items you want to display
                     itemBuilder: (BuildContext context, int index) {
                       return Column(
                         children: [
@@ -42,8 +42,11 @@ class ClientPage extends StatelessWidget {
                               ),
                               SizedBox(width: 8),
                               Text(
-                                  'hi this is demo purpose\n'
-                                      'This is bla it is test that how app look like'),
+                                  'Hi! \n''I need a driver',style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18
+                              ),
+                              ),
                             ],
                           ),
                           SizedBox(height: 20)

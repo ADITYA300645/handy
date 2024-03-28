@@ -1,10 +1,14 @@
-import 'package:flutter/material.dart';
-import 'dart:io';
 import 'dart:convert';
+import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class EditImage extends StatefulWidget {
-  const EditImage({super.key});
+  const EditImage({Key? key}) : super(key: key);
 
   @override
   State<EditImage> createState() => _EditImageState();
@@ -12,23 +16,127 @@ class EditImage extends StatefulWidget {
 
 class _EditImageState extends State<EditImage> {
 
-  File? seledtedImage;
+  firebase_storage.FirebaseStorage storage =
+      firebase_storage.FirebaseStorage.instance;
+  final currentUser = FirebaseAuth.instance.currentUser;
+  File? selectedImage;
   String base64Image = "";
 
-  Future<void>chooseImage(type) async{
+  Future<void> chooseImage(type) async {
     var image;
-
-    if(type=="camera"){
-      image=await ImagePicker().pickImage(source: ImageSource.camera);
-    }else{
+    if (type == "Gallery") {
       image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    } else {
+      image = await ImagePicker().pickImage(source: ImageSource.camera);
     }
-    if(image != null){
+    if (image != null) {
       setState(() {
-        seledtedImage = File(image.path);
-        base64Image = base64Encode(seledtedImage!.readAsBytesSync());
+        selectedImage = File(image.path);
+        base64Image = base64Encode(selectedImage!.readAsBytesSync());
       });
+      final fileName = DateTime.now().toString() + image.path.split('/').last;
+      final storageRef = firebase_storage.FirebaseStorage.instance
+          .ref(currentUser!.email)
+          .child('images/$fileName');
+      await storageRef.putFile(File(image.path));
+      // Get the download URL
+      final url = await storageRef.getDownloadURL();
+      // Use the download URL as needed
+      print('Image URL: $url');
+      // Save the download URL to Firestore
+      saveImageUrlToFirestore(url);
+
     }
+  }
+
+  Future<void> saveImageUrlToFirestore(String imageUrl) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(currentUser!.email)
+          .update({"photoURL": imageUrl});
+      // Fetch the updated user data from Firebase Authentication
+      print('Image URL saved to Firestore');
+      await currentUser!.reload();
+    } catch (error) {
+      print('Error saving image URL: $error');
+    }
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    currentUser!.reload();
+    (currentUser!.printInfo());
+    return Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Stack(
+            children: [
+              selectedImage != null
+                  ? Container(
+                height: 130,
+                width: 135,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  borderRadius: BorderRadius.circular(80),
+                  image: DecorationImage(
+                    image: FileImage(selectedImage!),
+                    fit: BoxFit.cover,
+                    alignment: Alignment.topCenter,
+                  ),
+                ),
+              )
+                  : StreamBuilder(
+                stream: FirebaseFirestore.instance.collection('users')
+                    .doc(currentUser?.email).snapshots(),
+                    builder:(context, snapshot) {
+                      final userData = snapshot.data!.data() as Map<String,dynamic>;
+                      return snapshot.hasData ? Container(
+                                    height: 155,
+                                    width: 155,
+                                    decoration: BoxDecoration(
+                                     // shape: BoxShape.circle,
+                                      borderRadius: BorderRadius.all(Radius.circular(6777)),
+                                      color: Colors.blue,
+                                    ),
+                                    child: ClipOval(
+
+                                      child: Image.network(userData["photoURL"],fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ) : Container();
+                    }
+                  ) ,
+              Positioned(
+                top: 120,
+                left: 90,
+                child: InkWell(
+                  onTap: () async {
+                    CustomUserImage(context);
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    height: 30,
+                    width: 80,
+                    decoration: BoxDecoration(
+                      color: Color(0xff200A36),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.add_a_photo,
+                      color: Color(0xffffffff),
+                      size: 15,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
   void CustomUserImage(BuildContext context) {
@@ -71,11 +179,9 @@ class _EditImageState extends State<EditImage> {
                     ),
                   ),
                 ),
-
                 SizedBox(
                   width: 100,
                 ),
-
                 InkWell(
                   onTap: () => chooseImage('camera'),
                   child: Container(
@@ -106,71 +212,4 @@ class _EditImageState extends State<EditImage> {
       },
     );
   }
-
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Stack(
-            children: [
-              seledtedImage != null
-                  ? Container(
-                height: 130,
-                width: 135,
-                decoration: BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.circular(80),
-                  image: DecorationImage(
-                      image: FileImage(
-                        seledtedImage!,
-                      ),
-                      fit: BoxFit.cover,
-                      alignment: Alignment
-                          .topCenter),
-                ),
-              )
-                  : Container(
-                height: 130,
-                width: 135,
-                decoration: BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  color: Colors.grey,
-                  borderRadius: BorderRadius.circular(80),
-                ),
-              ),
-              Positioned(
-                top: 100,
-                left: 80,
-                child: InkWell(
-                  onTap: () async {
-                    CustomUserImage(context);
-                  },
-
-                  child: Container(
-                    alignment: Alignment.center,
-                    height: 30,
-                    width: 80,
-                    decoration: BoxDecoration(
-                      color: Color(0xff200A36),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      Icons.add_a_photo,
-                      color: Color(0xffffffff),
-                      size: 15,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
 }
-
-

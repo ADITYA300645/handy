@@ -72,6 +72,16 @@ class _LoginPageState extends State<LoginPage> {
         password: _passwordController.text,
       );
 
+      FirebaseAuth.instance
+          .userChanges()
+          .listen((User? user) {
+        if (user == null) {
+          print('User is currently signed out!');
+        } else {
+          print('User is signed in!');
+        }
+      });
+
       // If successful, you can access the user via userCredential.user
       User? user = userCredential.user;
       if (user != null) {

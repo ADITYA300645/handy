@@ -101,7 +101,7 @@ class _SignUpPageState extends State<SignUpPage> {
       FirebaseFirestore.instance.collection('users')
           .doc(userCredential.user!.email)
           .set({
-        'username':_emailController.text,
+        'username':_usernameController.text,
         'email':_emailController.text,
         'password':_passwordController.text,
         'phone': _phoneController.text,
@@ -205,6 +205,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
                       child: TextField(
                         controller: _passwordController,
+                        obscureText: true,
                         decoration: InputDecoration(
                           hintText: "Password",
                         ),
@@ -216,7 +217,6 @@ class _SignUpPageState extends State<SignUpPage> {
                           horizontal: 20.0, vertical: 10),
                       child: TextField(
                         controller: _rePasswordController,
-                        obscureText: true,
                         decoration: const InputDecoration(
                           hintText: "re-password",
                         ),

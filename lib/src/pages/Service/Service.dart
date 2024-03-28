@@ -5,8 +5,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:handy/src/pages/widgets/appbar/CustomAppBar.dart';
 
-
-
 class ServicePage extends StatefulWidget {
   const ServicePage({super.key});
 
@@ -15,7 +13,6 @@ class ServicePage extends StatefulWidget {
 }
 
 class _ServiceState extends State<ServicePage> {
-
 
   @override
   Widget build(BuildContext context) {
@@ -97,30 +94,32 @@ class _ServiceState extends State<ServicePage> {
                   ),),
                 ),
 
-                SizedBox(height: 20),
+                SizedBox(height: MediaQuery.of(context).size.height*0.1),
 
-                DropDownTextField(
-                  textFieldDecoration:
-                  InputDecoration(hintText: "services"),
-                  enableSearch: true,
-                  dropDownList: const [
-                    DropDownValueModel(name: 'electician', value: ""),
-                    DropDownValueModel(name: 'plumber', value: ""),
-                    DropDownValueModel(name: 'carpentar', value: ""),
-                    DropDownValueModel(name: 'cook', value: ""),
-                    DropDownValueModel(name: 'driver', value: ""),
-                    DropDownValueModel(name: 'sweeper', value: ""),
-                    DropDownValueModel(name: 'labour', value: ""),
-                    DropDownValueModel(name: 'garderner', value: ""),
-                    DropDownValueModel(name: 'builder', value: ""),
-                    DropDownValueModel(name: 'helper', value: ""),
-                    DropDownValueModel(name: 'ironsmith', value: ""),
+                Container(
+                  height: 20,
+                  width: 380,
+                  child: DropDownTextField(
+                    textFieldDecoration: InputDecoration(hintText: "services"),
+                    enableSearch: true,
+                    dropDownList: const [
+                      DropDownValueModel(name: 'electician', value: ""),
+                      DropDownValueModel(name: 'plumber', value: ""),
+                      DropDownValueModel(name: 'carpentar', value: ""),
+                      DropDownValueModel(name: 'cook', value: ""),
+                      DropDownValueModel(name: 'driver', value: ""),
+                      DropDownValueModel(name: 'sweeper', value: ""),
+                      DropDownValueModel(name: 'labour', value: ""),
+                      DropDownValueModel(name: 'garderner', value: ""),
+                      DropDownValueModel(name: 'builder', value: ""),
+                      DropDownValueModel(name: 'helper', value: ""),
+                      DropDownValueModel(name: 'ironsmith', value: ""),
 
-                  ],
+                    ],
+                  ),
                 ),
 
-                SizedBox(height: 30),
-
+                SizedBox(height: MediaQuery.of(context).size.height*0.06),
 
                 ElevatedButton(
                   onPressed: () {
@@ -130,9 +129,11 @@ class _ServiceState extends State<ServicePage> {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.pink, // Set the background color
+                     // Set the background color
+                    backgroundColor: Colors.redAccent ,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0), // Set the border radius
+                      borderRadius: BorderRadius.circular(10.0),
+                      // Set the border radius
                     ),
                     minimumSize: Size(290, 50), // Set the width and height
                   ),
@@ -146,29 +147,24 @@ class _ServiceState extends State<ServicePage> {
                   ),
                 ),
 
-                SizedBox(height: MediaQuery.of(context).size.height*0.01),
+                SizedBox(height: MediaQuery.of(context).size.height*0.05),
 
-                Text(' ☑️Browse profiles,ratings and portfolios',style: TextStyle(
-                  fontSize: 20,
+                Text('☑️Browse profiles,ratings and portfolios',style: TextStyle(
+                  fontSize: 19,
                   fontWeight: FontWeight.w600,
                 ),
                 ),
-                Text(' ☑️Contact skilled person within minutes',style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                ),
-                ),
-
-
-                Text(' ☑️Pay only when you are 100% satisfied',style: TextStyle(
-                  fontSize: 20,
+                Text('☑️Contact skilled person within minutes',style: TextStyle(
+                  fontSize: 19,
                   fontWeight: FontWeight.w600,
                 ),
                 ),
 
-
-
-
+                Text('☑️Pay only when you are 100% satisfied',style: TextStyle(
+                  fontSize: 19,
+                  fontWeight: FontWeight.w600,
+                ),
+                ),
               ],
 
             ),

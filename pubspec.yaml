@@ -42,6 +42,9 @@ dependencies:
   cloud_firestore: ^4.2.0
   flutter_launcher_icons: ^0.13.1
   flutter_signin_button: ^2.0.0
+  firebase_storage: ^11.6.9
+
+
 
  #Google
   google_sign_in: ^6.2.1
@@ -66,6 +69,7 @@ dependencies:
   flutter_native_splash: ^2.3.10
   image_picker: ^1.0.7
   url_launcher: ^6.0.10
+  simple_animations: ^5.0.2
 
 
 

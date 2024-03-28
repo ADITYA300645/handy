@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:handy/src/Splash/Splash.dart';
@@ -19,6 +20,14 @@ void main() async {
   Hive.init(appDoc.path);
   await Hive.openBox("secrets");
   await Hive.openBox("data");
+
+  FirebaseAuth.instance
+      .authStateChanges()
+      .listen((User? user) {
+    if (user != null) {
+      print(user.uid);
+    }
+  });
   runApp(const MyApp());
 }
 
@@ -34,7 +43,6 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      //  create: (context) => UserProvider(),
       title: 'Handy',
       theme: lightTheme,
       home: SplashScreen(),

@@ -35,25 +35,29 @@ class CustomBottomBar extends StatelessWidget {
             children: [
               IconButton(
                   onPressed: () {
-                    Get.off(HomePage());
+                    Get.to(
+                          ()=>HomePage(),transition: Transition.fadeIn,);
                   },
                   icon: const Icon(Icons.home)
               ),
               IconButton(
                   onPressed: () {
-                    Get.off(Options());
+                    Get.to(
+                            ()=>Options(), transition: Transition.fadeIn);
                   },
                   icon: const Icon(Icons.search_sharp)
               ),
               IconButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>Profile()));
+                    Get.to(
+                            ()=>Profile(),transition: Transition.fadeIn);
                   },
                   icon: const Icon(Icons.manage_accounts)
               ),
               IconButton(
                   onPressed: () {
-                    Get.off(NotificationPage());
+                    Get.to(
+                        ()=>NotificationPage(), transition: Transition.fadeIn);
                   },
                   icon: const Icon(Icons.mail)
               )
