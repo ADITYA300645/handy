@@ -103,7 +103,7 @@ class _ServiceState extends State<ServicePage> {
                     textFieldDecoration: InputDecoration(hintText: "services"),
                     enableSearch: true,
                     dropDownList: const [
-                      DropDownValueModel(name: 'electician', value: ""),
+                      DropDownValueModel(name: 'electician', value: "electician"),
                       DropDownValueModel(name: 'plumber', value: ""),
                       DropDownValueModel(name: 'carpentar', value: ""),
                       DropDownValueModel(name: 'cook', value: ""),
@@ -114,7 +114,6 @@ class _ServiceState extends State<ServicePage> {
                       DropDownValueModel(name: 'builder', value: ""),
                       DropDownValueModel(name: 'helper', value: ""),
                       DropDownValueModel(name: 'ironsmith', value: ""),
-
                     ],
                   ),
                 ),
