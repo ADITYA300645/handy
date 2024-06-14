@@ -35,7 +35,7 @@ class CustomBottomBar extends StatelessWidget {
             children: [
               IconButton(
                   onPressed: () {
-                    Get.to(
+                    Get.offAll(
                           ()=>HomePage(),transition: Transition.fadeIn,);
                   },
                   icon: const Icon(Icons.home)

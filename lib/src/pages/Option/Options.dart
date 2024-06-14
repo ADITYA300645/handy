@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:handy/src/pages/Client/Client.dart';
 import 'package:get/get.dart';
+import 'package:handy/src/pages/Client/SearchJobs/JobSearch.dart';
+import 'package:handy/src/pages/Auth/Phone/Otp/Otp.dart';
 import 'package:handy/src/pages/Service/Service.dart';
+import 'package:handy/src/pages/Service/Service2.dart';
 import 'package:handy/src/pages/widgets/appbar/CustomAppBar.dart';
 import 'package:handy/src/pages/widgets/bottombar/CustomBottomBar.dart';
 
@@ -41,7 +44,7 @@ class Options extends StatelessWidget {
               height: 125,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => ClientPage(),));
+                  Get.to(()=>JobSearch(),transition: Transition.fadeIn);
                 },
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -71,7 +74,7 @@ class Options extends StatelessWidget {
               height: 125,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => ServicePage(),));
+                  Get.to(()=>ServicePage(),transition: Transition.fadeIn);
                 },
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,

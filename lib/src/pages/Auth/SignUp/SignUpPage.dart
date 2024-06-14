@@ -1,6 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:handy/src/pages/Auth/Phone/Otp/Otp.dart';
+import 'package:handy/src/pages/Auth/Phone/PhoneVerification.dart';
 import 'package:handy/src/pages/home/HomePage.dart';
 import 'package:handy/src/pages/Auth/Login/googleauth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -18,7 +22,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _rePasswordController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController(text: '+91');
 
 
   bool _validateInput() {
@@ -110,16 +114,16 @@ class _SignUpPageState extends State<SignUpPage> {
 
       // If successful, you can access the user via userCredential.user
       User? user = userCredential.user;
-      if (user != null) {
-        Get.snackbar(
-          'now',
-          'user created',
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.greenAccent,
-          colorText: Colors.white,
-        );
-        // You can save additional user data to Firestore or Realtime Database here
-      }
+      // if (user != null) {
+      //   Get.snackbar(
+      //     'now',
+      //     'user created',
+      //     snackPosition: SnackPosition.BOTTOM,
+      //     backgroundColor: Colors.greenAccent,
+      //     colorText: Colors.white,
+      //   );
+      //   // You can save additional user data to Firestore or Realtime Database here
+      // }
     } catch (e) {
       Get.snackbar(
         'failed',
@@ -270,29 +274,39 @@ class _SignUpPageState extends State<SignUpPage> {
                     Center(
                       child: GestureDetector(
                         onTap: () async {
-                          await signInWithGoogle();
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(builder: (context) => HomePage()),
-                          );
+                         // await signInWithGoogle();
+                          signInWithGoogle();
+                          Get.to(()=>HomePage());
                         },
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            SizedBox(width: MediaQuery.of(context).size.width*0.2),
-                            Container(
-                              height:MediaQuery.of(context).size.width*0.07,
-                              width: MediaQuery.of(context).size.width*0.07,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage('assets/photos/googleLogo.png'),
-                                  fit:  BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: MediaQuery.of(context).size.width*0.01),
                             TextButton(
-                              onPressed: (){},
-                              child: Text('login with google'),
+                              onPressed: () async {
+                                bool isSignedIn = (await signInWithGoogle()) as bool;
+                                if (isSignedIn) {
+                                  Get.to(() =>HomePage());
+                                }else{
+                                  print('unable to login');
+                                }
+                              },
+                              child: Row(
+                                children: [
+                                  Container(
+                                    height:MediaQuery.of(context).size.width*0.07,
+                                    width: MediaQuery.of(context).size.width*0.07,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: AssetImage('assets/photos/googleLogo.png'),
+                                        fit:  BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(width: MediaQuery.of(context).size.width*0.01),
+                                  Text('login with google'),
+                                ],
+                              ),
                             ),
                           ],
                         ),

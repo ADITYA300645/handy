@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:handy/src/pages/Auth/Login/googleauth.dart';
 import 'package:handy/src/pages/Auth/SignUp/SignUpPage.dart';
@@ -92,12 +94,8 @@ class _LoginPageState extends State<LoginPage> {
           backgroundColor: Colors.lightBlueAccent,
           colorText: Colors.white,
         );
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => HomePage(),
-          ),
-        );
+        Get.off(HomePage());
+
         // You can proceed with further actions after successful sign-in
       }
 
@@ -117,13 +115,18 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      // If user is already authenticated, navigate to home page
+      return HomePage();
+    }
+
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.home),
-        onPressed: () =>
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => HomePage())),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   child: Icon(Icons.home),
+      //   onPressed: () =>
+      //      Get.off(HomePage())
+      // ),
 
       body: Stack(
         alignment: Alignment.center,
@@ -260,58 +263,61 @@ class _LoginPageState extends State<LoginPage> {
 
 
                     Center(
-                      child: GestureDetector(
-                        onTap: () async {
-                          await signInWithGoogle();
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(builder: (context) => HomePage()),
-                          );
-                        },
-                        child: Row(
+                      child: Row(
                           children: [
                             SizedBox(width: MediaQuery.of(context).size.width*0.2),
-                            Container(
-                                height:MediaQuery.of(context).size.width*0.07,
-                                width: MediaQuery.of(context).size.width*0.07,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: AssetImage('assets/photos/googleLogo.png'),
-                                    fit:  BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                            SizedBox(width: MediaQuery.of(context).size.width*0.00001),
+
                             TextButton(
-                              onPressed: (){},
-                              child: Text('login with google'),
+                              onPressed: () async {
+                                bool isSignedIn = (await signInWithGoogle()) as bool;
+                                if (isSignedIn) {
+                                  Get.to(() =>HomePage());
+                                }else{
+                                  print('unable to login');
+                                }
+                              },
+                              child: Row(
+                                children: [
+                                  Container(
+                                    height:MediaQuery.of(context).size.width*0.07,
+                                    width: MediaQuery.of(context).size.width*0.07,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: AssetImage('assets/photos/googleLogo.png'),
+                                        fit:  BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(width: MediaQuery.of(context).size.width*0.01),
+                                  Text('login with google'),
+                                ],
+                              ),
                             ),
                           ],
                         ),
-                      ),
                     ),
                   ],
                 ),
               ),
             ),
           ),
-          Positioned(
-            bottom: 10,
-            child: Row(
-              children: [
-                const Text("Don't have an Account ? "),
-                TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => SignUpPage()),
-                    );
-                  },
-                  child: const Text("Sign Up"),
+           Padding(
+             padding: const EdgeInsets.only(top: 750,left: 80),
+             child: Row(
+                  children: [
+                    const Text("Don't have an Account ? "),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => SignUpPage()),
+                        );
+                      },
+                      child: const Text("Sign Up"),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          )
+           ),
         ],
       ),
     );

@@ -25,11 +25,15 @@ class _EditImageState extends State<EditImage> {
   Future<void> chooseImage(type) async {
     var image;
     if (type == "Gallery") {
-      image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      image = await ImagePicker().pickImage(
+          source: ImageSource.gallery,
+      );
     } else {
-      image = await ImagePicker().pickImage(source: ImageSource.camera);
+      image = await ImagePicker().pickImage(
+          source: ImageSource.camera
+      );
     }
-    if (image != null) {
+    if (image != null){
       setState(() {
         selectedImage = File(image.path);
         base64Image = base64Encode(selectedImage!.readAsBytesSync());
@@ -63,6 +67,7 @@ class _EditImageState extends State<EditImage> {
     }
   }
 
+  var dummyImageUrl = "https://imgs.search.brave.com/36Yk4wYWXf62iqt4iTqG-CQDRzOG9K0-1PyF-6uFH5s/rs:fit:500:0:0/g:ce/aHR0cHM6Ly90My5m/dGNkbi5uZXQvanBn/LzA1LzE0LzE4LzQ2/LzM2MF9GXzUxNDE4/NDY1MV9XNXJWQ2Fi/S0tSSDZIM21WYjYy/allXZnVYaW84Yzhz/aS5qcGc";
 
   @override
   Widget build(BuildContext context) {
@@ -76,11 +81,10 @@ class _EditImageState extends State<EditImage> {
             children: [
               selectedImage != null
                   ? Container(
-                height: 130,
-                width: 135,
+                height: 155,
+                width: 155,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  borderRadius: BorderRadius.circular(80),
                   image: DecorationImage(
                     image: FileImage(selectedImage!),
                     fit: BoxFit.cover,
@@ -88,22 +92,24 @@ class _EditImageState extends State<EditImage> {
                   ),
                 ),
               )
-                  : StreamBuilder(
+              :StreamBuilder(
                 stream: FirebaseFirestore.instance.collection('users')
                     .doc(currentUser?.email).snapshots(),
                     builder:(context, snapshot) {
+
                       final userData = snapshot.data!.data() as Map<String,dynamic>;
+                      print(userData);
                       return snapshot.hasData ? Container(
                                     height: 155,
                                     width: 155,
                                     decoration: BoxDecoration(
-                                     // shape: BoxShape.circle,
                                       borderRadius: BorderRadius.all(Radius.circular(6777)),
-                                      color: Colors.blue,
+                                      color: Colors.grey.shade400,
                                     ),
                                     child: ClipOval(
 
-                                      child: Image.network(userData["photoURL"],fit: BoxFit.cover,
+                                      child: Image.network(userData["photoURL"] ?? dummyImageUrl,
+                                        fit: BoxFit.cover,
                                       ),
                                     ),
                                   ) : Container();
@@ -164,7 +170,7 @@ class _EditImageState extends State<EditImage> {
                   child: Container(
                     alignment: Alignment.center,
                     height: 100,
-                    width: 100,
+                    width: 70,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Row(
@@ -187,7 +193,7 @@ class _EditImageState extends State<EditImage> {
                   child: Container(
                     alignment: Alignment.center,
                     height: 100,
-                    width: 100,
+                    width: 70,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Padding(

@@ -1,13 +1,18 @@
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:get/get.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:handy/src/controller/serviceController.dart';
+import 'package:handy/src/pages/Client/SearchJobs/JobSearch.dart';
 import 'package:handy/src/pages/widgets/appbar/CustomAppBar.dart';
 
 class ClientPage extends StatelessWidget {
-  const ClientPage({Key? key}) : super(key: key);
+ const ClientPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final serviceController = Get.put(ServiceController());
     return Scaffold(
       body: Stack(
         alignment: Alignment.bottomCenter,
@@ -42,7 +47,7 @@ class ClientPage extends StatelessWidget {
                               ),
                               SizedBox(width: 8),
                               Text(
-                                  'Hi! \n''I need a driver',style: TextStyle(
+                                  'Hi! \n''I need a ${serviceController.selectedService.value} ',style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18
                               ),
@@ -63,7 +68,7 @@ class ClientPage extends StatelessWidget {
             right: MediaQuery.of(context).size.width * 0.1,
             child: FloatingActionButton(
               onPressed: () {
-                showDropDownTextField(context);
+                Get.to(()=>JobSearch());
                     },
               child: Icon(Icons.search),
             ),
@@ -75,32 +80,32 @@ class ClientPage extends StatelessWidget {
     );
   }
 }
-
-void showDropDownTextField(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (context) {
-      return AlertDialog(
-        content: DropDownTextField(
-          textFieldDecoration: InputDecoration(
-            hintText: 'deals',
-          ),
-          clearOption: true,
-          enableSearch: true,
-          dropDownItemCount: 6,
-          dropDownList: const [
-            DropDownValueModel(name: '', value: ''),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(); // Close the dialog
-            },
-            child: Text('Close'),
-          ),
-        ],
-      );
-    },
-  );
-}
+//
+// void showDropDownTextField(BuildContext context) {
+//   showDialog(
+//     context: context,
+//     builder: (context) {
+//       return AlertDialog(
+//         content: DropDownTextField(
+//           textFieldDecoration: InputDecoration(
+//             hintText: 'deals',
+//           ),
+//           clearOption: true,
+//           enableSearch: true,
+//           dropDownItemCount: 6,
+//           dropDownList: const [
+//             DropDownValueModel(name: '', value: ''),
+//           ],
+//         ),
+//         actions: [
+//           TextButton(
+//             onPressed: () {
+//               Navigator.of(context).pop(); // Close the dialog
+//             },
+//             child: Text('Close'),
+//           ),
+//         ],
+//       );
+//     },
+//   );
+// }

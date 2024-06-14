@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-
-import '../../../ServiceProfile/ServiceProfile.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:handy/src/pages/Service/Service2.dart';
 
 class ServiceBar extends StatefulWidget {
   const ServiceBar({super.key});
@@ -31,92 +32,95 @@ class _ServiceBarState extends State<ServiceBar> {
           ),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
-            child: InkWell(
-              onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>ServiceProfile()));
-              },
-              child: Row(
-                children: [
-                  Container(
-                    height: MediaQuery.of(context).size.width * 0.08,
-                    width:  MediaQuery.of(context).size.width * 0.2,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.grey.shade300,
-                    ),
-                    child: Center(
-                      child: Text('carpenter',
-                        style: TextStyle(
-                          fontSize: 13,
+            child: GestureDetector(
+              onTap: (){},
+              child: InkWell(
+                 onTap: () {
+                   Get.to(()=>Service2(),transition: Transition.fadeIn);
+                 },
+                child: Row(
+                  children: [
+                    Container(
+                      height: MediaQuery.of(context).size.width * 0.08,
+                      width:  MediaQuery.of(context).size.width * 0.2,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.grey.shade300,
+                      ),
+                      child: Center(
+                        child: Text('carpenter',
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  SizedBox(width: 10),
-                  Container(
-                    height: MediaQuery.of(context).size.width * 0.08,
-                    width:  MediaQuery.of(context).size.width * 0.2,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.grey.shade300,
-                    ),
-                    child: Center(
-                      child: Text('electrician',
-                        style: TextStyle(
-                          fontSize: 13,
+                    SizedBox(width: 10),
+                    Container(
+                      height: MediaQuery.of(context).size.width * 0.08,
+                      width:  MediaQuery.of(context).size.width * 0.2,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.grey.shade300,
+                      ),
+                      child: Center(
+                        child: Text('electrician',
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  SizedBox(width: 10),
-                  Container(
-                    height: MediaQuery.of(context).size.width * 0.08,
-                    width:  MediaQuery.of(context).size.width * 0.2,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.grey.shade300,
-                    ),
-                    child: Center(
-                      child: Text('labour',
-                        style: TextStyle(
-                          fontSize: 13,
+                    SizedBox(width: 10),
+                    Container(
+                      height: MediaQuery.of(context).size.width * 0.08,
+                      width:  MediaQuery.of(context).size.width * 0.2,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.grey.shade300,
+                      ),
+                      child: Center(
+                        child: Text('labour',
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  SizedBox(width: 10),
-                  Container(
-                    height: MediaQuery.of(context).size.width * 0.08,
-                    width:  MediaQuery.of(context).size.width * 0.2,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.grey.shade300,
-                    ),
-                    child: Center(
-                      child: Text('cook',
-                        style: TextStyle(
-                          fontSize: 13,
+                    SizedBox(width: 10),
+                    Container(
+                      height: MediaQuery.of(context).size.width * 0.08,
+                      width:  MediaQuery.of(context).size.width * 0.2,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.grey.shade300,
+                      ),
+                      child: Center(
+                        child: Text('chef',
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  SizedBox(width: 10),
-                  Container(
-                    height: MediaQuery.of(context).size.width * 0.08,
-                    width:  MediaQuery.of(context).size.width * 0.2,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.grey.shade300,
-                    ),
-                    child: Center(
-                      child: Text('plumber',
-                        style: TextStyle(
-                          fontSize: 13,
+                    SizedBox(width: 10),
+                    Container(
+                      height: MediaQuery.of(context).size.width * 0.08,
+                      width:  MediaQuery.of(context).size.width * 0.2,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.grey.shade300,
+                      ),
+                      child: Center(
+                        child: Text('plumber',
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           )

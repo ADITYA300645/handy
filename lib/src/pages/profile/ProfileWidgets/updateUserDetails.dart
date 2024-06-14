@@ -12,10 +12,10 @@ class updateUserDetails extends StatefulWidget {
   String phone;
   String password;
   updateUserDetails({ super.key,
-    required this.userName,
-    required this.email,
-    required this.phone,
-    required this.password,});
+     this.userName="",
+     this.email="",
+     this.phone="",
+     this.password="",});
   @override
   State<updateUserDetails> createState() => _updateUserDetailsState();
 }
@@ -26,10 +26,8 @@ class _updateUserDetailsState extends State<updateUserDetails> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   final categoryController = SingleValueDropDownController();
-  final jobController = SingleValueDropDownController();
-
-
-  TextEditingController citizenController = TextEditingController();
+  final serviceController = SingleValueDropDownController();
+  TextEditingController exeperienceController = TextEditingController();
 
   final currentUser = FirebaseAuth.instance.currentUser;
   bool isLoading = false;
@@ -40,8 +38,8 @@ class _updateUserDetailsState extends State<updateUserDetails> {
     print(widget.email);
     usernameController.text = widget.userName;
     emailController.text = widget.email;
-    phoneController.text = widget.phone;
     passwordController.text = widget.password;
+    phoneController.text = widget.phone;
   }
 
   // Update user data in Firestore
@@ -51,17 +49,29 @@ class _updateUserDetailsState extends State<updateUserDetails> {
       setState(() {
         isLoading = true;
       });
-      await FirebaseFirestore.instance.collection('users').doc(currentUser?.email).update({
+
+      CollectionReference collection;
+    /*  if (categoryController.dropDownValue?.value == 'worker') {
+        collection = FirebaseFirestore.instance.collection('workers');
+      }
+      else{
+      }*/
+      collection = FirebaseFirestore.instance.collection('users');
+
+
+      await collection.doc(currentUser?.email).set({
         'username': usernameController.text,
         'email': emailController.text,
         'phone': phoneController.text,
         'password': passwordController.text,
-        'category': categoryController.dropDownValue?.value.toString()
+        'category': categoryController.dropDownValue?.value.toString(),
+        'service': serviceController.dropDownValue?.value.toString(),
+        'exeperienc': exeperienceController.text,
       });
       await Future.delayed(Duration(seconds: 2));
 
       setState(() {
-        isLoading = false;
+        isLoading = true;
       });
     }
   }
@@ -88,7 +98,8 @@ class _updateUserDetailsState extends State<updateUserDetails> {
     emailController.text = "";
     passwordController.text = "";
     phoneController.text = "";
-  }
+    exeperienceController.text= '';
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -103,15 +114,13 @@ class _updateUserDetailsState extends State<updateUserDetails> {
                     child: Dialog(
                       child: Container(
                         width: MediaQuery.of(context).size.width * 0.6,
-                        height:MediaQuery.of(context).size.height * 0.6,
-                        padding: EdgeInsets.all(10.0),
+                        height:MediaQuery.of(context).size.height * 0.7,
+                        padding: EdgeInsets.all(15.0),
                         child: Column(
                           children: [
                             TextField(
                               controller: usernameController,
-                    
                               decoration: InputDecoration(
-                    
                                 labelText: 'Username',
                                 hintText: 'username',
                               ),
@@ -145,47 +154,61 @@ class _updateUserDetailsState extends State<updateUserDetails> {
                                 hintText: 'Category',
                               ),
                               clearOption: true,
-                              dropDownItemCount: 6,
                               dropDownList: const [
                                 DropDownValueModel(name: 'client', value: 'client'),
                                 DropDownValueModel(name: 'worker', value: 'worker'),
                               ],
                             ),
+
                             SizedBox(height: 15),
                             if (categoryController.dropDownValue?.value=='worker')
-                         DropDownTextField(
-                         textFieldDecoration: InputDecoration(hintText: "services"),
-                         enableSearch: true,
-                             dropDownList: const [
-                      DropDownValueModel(name: 'electician', value: ""),
-                      DropDownValueModel(name: 'plumber', value: ""),
-                      DropDownValueModel(name: 'carpentar', value: ""),
-                      DropDownValueModel(name: 'cook', value: ""),
-                      DropDownValueModel(name: 'driver', value: ""),
-                      DropDownValueModel(name: 'sweeper', value: ""),
-                      DropDownValueModel(name: 'labour', value: ""),
-                      DropDownValueModel(name: 'garderner', value: ""),
-                      DropDownValueModel(name: 'builder', value: ""),
-                      DropDownValueModel(name: 'helper', value: ""),
-                      DropDownValueModel(name: 'ironsmith', value: ""),
 
-                    ],
-                  ),
+                            Column(
+                              children: [
+                                DropDownTextField(
+                                                         textFieldDecoration: InputDecoration(hintText: "services"),
+                                                           controller: serviceController,
+                                                           dropDownItemCount: 6,
+                                                           enableSearch: true,
+                                 dropDownList: const [
+                                                      DropDownValueModel(name: 'electician', value: "electician"),
+                                                      DropDownValueModel(name: 'plumber', value: "plumber"),
+                                                      DropDownValueModel(name: 'carpentar', value: "carpentar"),
+                                                      DropDownValueModel(name: 'cook', value: "cook"),
+                                                      DropDownValueModel(name: 'driver', value: "driver"),
+                                                      DropDownValueModel(name: 'sweeper', value: "sweeper"),
+                                                      DropDownValueModel(name: 'labour', value: "labour"),
+                                                      DropDownValueModel(name: 'garderner', value: "garderner"),
+                                                      DropDownValueModel(name: 'builder', value: "builder"),
+                                                      DropDownValueModel(name: 'helper', value: "helper"),
+                                                      DropDownValueModel(name: 'ironsmith', value: "ironsmith"),
+                                                    ],
+                                                  ),
+                                TextField(
+                                  decoration: InputDecoration(
+                                      labelText: 'Experience',
+                                      hintText: 'experience'
+                                  ),
+                                  controller: exeperienceController,
+                                ),
+                              ],
+
+                            ),
 
 
 
 
 
-
-
-                        SizedBox(height: MediaQuery.of(context).size.height * 0.04),
+                            SizedBox(height: MediaQuery.of(context).size.height * 0.04),
                             Center(
                               child: TextButton(
                                 onPressed: () async {
                                   update();
                                   Navigator.pop(context);
                                 },
-                                child: Text('Save'),
+                                child: Text('Save',style:  TextStyle(
+                                  fontSize: 20,
+                                ),),
                               ),
                             ),
                     
